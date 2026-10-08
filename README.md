@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Learning Dashboard (iOS · SwiftUI)
 
 **Run:** `brew install xcodegen && xcodegen generate && open LearningDashboard.xcodeproj` (iOS 17+, Xcode 15+). Tests: ⌘U.
@@ -24,6 +23,3 @@ Tokens go in the **Keychain** (`KeychainTokenStore`, `AfterFirstUnlockThisDevice
 
 ## 5. Second Platform (Android)
 Kotlin + Jetpack Compose, same layering: `Composable → ViewModel (StateFlow<UiState>) → Repository → Retrofit/OkHttp + Room`. Room replaces `FileCourseStore` (Flow-based reads give offline for free); Hilt replaces `AppContainer`; tokens in Keystore-backed EncryptedSharedPreferences; Navigation-Compose for routing; connectivity via `ConnectivityManager`; tests with JUnit + Turbine + a fake repository.
-=======
-# Learning-Dashboard
->>>>>>> e1342edc627719f2d8d345a90e065c6ba3d138fd
