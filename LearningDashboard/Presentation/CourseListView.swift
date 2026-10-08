@@ -15,6 +15,8 @@ struct CourseListView: View {
     var body: some View {
         NavigationStack(path: $path) {
             content
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Theme.background)
                 .navigationTitle("My Courses")
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -48,15 +50,17 @@ struct CourseListView: View {
             ContentUnavailableView("No courses yet", systemImage: "books.vertical",
                                    description: Text("Courses you enroll in will appear here."))
         case .loaded:
-            List {
-                if viewModel.isShowingCachedData {
-                    Label("Offline – showing saved courses", systemImage: "icloud.slash")
-                        .font(.footnote)
-                        .foregroundStyle(.orange)
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    if viewModel.isShowingCachedData {
+                        Label("Offline – showing saved courses", systemImage: "icloud.slash")
+                            .font(.footnote).foregroundStyle(.secondary)
+                    }
+                    ForEach(viewModel.courses) { course in
+                        CourseRow(course: course) { path.append(course) }
+                    }
                 }
-                ForEach(viewModel.courses) { course in
-                    CourseRow(course: course) { path.append(course) }
-                }
+                .padding()
             }
             .refreshable { await viewModel.load() }
         }
@@ -81,6 +85,6 @@ private struct CourseRow: View {
                     .controlSize(.small)
             }
         }
-        .padding(.vertical, 4)
+        .card()
     }
 }

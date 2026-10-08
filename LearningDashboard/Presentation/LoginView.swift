@@ -18,8 +18,6 @@ struct LoginView: View {
                     SecureField("Password", text: $viewModel.password)
                         .textContentType(.password)
                     fieldError(viewModel.passwordError)
-                } footer: {
-                    Text("Demo: any valid email, password \"password123\"")
                 }
 
                 if case .failed(let message) = viewModel.state {
@@ -29,14 +27,17 @@ struct LoginView: View {
                 Button {
                     Task { await viewModel.login() }
                 } label: {
-                    HStack {
-                        Spacer()
-                        if viewModel.isLoading { ProgressView() } else { Text("Log In") }
-                        Spacer()
+                    Group {
+                        if viewModel.isLoading { ProgressView().tint(.white) } else { Text("Log In") }
                     }
+                    .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderedProminent)
                 .disabled(viewModel.isLoading)
+                .listRowBackground(Color.clear)
             }
+            .scrollContentBackground(.hidden)
+            .background(Theme.background)
             .navigationTitle("Welcome")
         }
     }

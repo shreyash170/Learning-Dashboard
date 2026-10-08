@@ -19,7 +19,11 @@ struct LearningDashboardApp: App {
     @State private var container = AppContainer()
 
     var body: some Scene {
-        WindowGroup { RootView(container: container) }
+        WindowGroup {
+            RootView(container: container)
+                .tint(Theme.accent)
+                .preferredColorScheme(.light)
+        }
     }
 }
 
