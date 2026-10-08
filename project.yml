@@ -1,0 +1,27 @@
+name: LearningDashboard
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "17.0"
+targets:
+  LearningDashboard:
+    type: application
+    platform: iOS
+    sources: [LearningDashboard]
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Learning
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.LearningDashboard
+  LearningDashboardTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [LearningDashboardTests]
+    dependencies:
+      - target: LearningDashboard
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: YES
