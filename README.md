@@ -1,9 +1,5 @@
 # Learning Dashboard (iOS · SwiftUI)
 
-**Run:** `brew install xcodegen && xcodegen generate && open LearningDashboard.xcodeproj` (iOS 17+, Xcode 15+). Tests: ⌘U.
-Login: any valid email + password `password123`.
-**Demo offline:** load courses once, then turn off the Mac's Wi-Fi (the simulator shares the host network), pull-to-refresh or relaunch. Launch arg `-forceAPIFailure` simulates a server error.
-
 ## 1. Architecture
 MVVM + Repository: `View → @Observable ViewModel → CourseRepository (protocol) → CourseAPI + CourseStore (protocols)`.
 Views are dumb and render a single `State` enum (loading / loaded / empty / failed). ViewModels contain no networking or persistence. The repository is the single source of truth and the only layer that knows about caching, so data sources can be swapped (real API, SwiftData) without touching UI. All dependencies are wired in one composition root (`AppContainer`), so every layer is unit-testable with fakes. Progress is *derived* from lesson state (`Course.progress`), so it cannot drift out of sync.
