@@ -10,12 +10,15 @@ final class CourseListViewModel {
     private(set) var courses: [Course] = []
     private(set) var isShowingCachedData = false
 
+    var totalLessons: Int { courses.reduce(0) { $0 + $1.lessonCount } }
+    var completedLessons: Int { courses.reduce(0) { $0 + $1.completedCount } }
+    var overallProgress: Int { ProgressCalculator.percent(completed: completedLessons, total: totalLessons) }
+
     @ObservationIgnored private let repository: CourseRepository
 
     init(repository: CourseRepository) { self.repository = repository }
 
     func load() async {
-        // Only show the full-screen spinner on first load; refreshes keep current content.
         if courses.isEmpty { state = .loading }
         do {
             let result = try await repository.loadCourses()
@@ -27,7 +30,6 @@ final class CourseListViewModel {
         }
     }
 
-    /// Called by the detail screen so the list reflects progress immediately.
     func apply(_ updated: Course) {
         guard let index = courses.firstIndex(where: { $0.id == updated.id }) else { return }
         courses[index] = updated

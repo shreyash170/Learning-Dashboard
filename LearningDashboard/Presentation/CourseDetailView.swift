@@ -12,11 +12,13 @@ struct CourseDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Progress: \(viewModel.course.progress)%").font(.headline)
-                    ProgressView(value: Double(viewModel.course.progress), total: 100)
-                    Text("\(viewModel.course.completedCount) of \(viewModel.course.lessonCount) lessons completed")
-                        .font(.caption).foregroundStyle(.secondary)
+                HStack(spacing: 16) {
+                    ProgressRing(value: viewModel.course.progress, size: 72)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(viewModel.course.instructor).font(.headline)
+                        Text("\(viewModel.course.completedCount) of \(viewModel.course.lessonCount) lessons completed")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                    }
                 }
                 .card()
 
@@ -44,18 +46,18 @@ private struct LessonRow: View {
     let onComplete: () -> Void
 
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
+            Image(systemName: lesson.isCompleted ? "checkmark.circle.fill" : "circle")
+                .font(.title3)
+                .foregroundStyle(lesson.isCompleted ? Theme.accent : .secondary.opacity(0.5))
             Text(lesson.title)
+                .foregroundStyle(lesson.isCompleted ? .secondary : .primary)
             Spacer()
-            if lesson.isCompleted {
-                Label("Completed", systemImage: "checkmark.circle.fill")
-                    .font(.caption).foregroundStyle(Theme.accent)
-            } else {
-                Button(action: onComplete) {
-                    Label("Mark done", systemImage: "circle").font(.caption)
-                }
-                .buttonStyle(.bordered)
-                .disabled(isBusy)
+            if !lesson.isCompleted {
+                Button("Mark done", action: onComplete)
+                    .font(.caption.weight(.semibold))
+                    .buttonStyle(.bordered)
+                    .disabled(isBusy)
             }
         }
         .card()
